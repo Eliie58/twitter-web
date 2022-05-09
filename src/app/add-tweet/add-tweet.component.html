@@ -1,0 +1,11 @@
+<div class="app-add-tweet">
+    <div class="container">
+        <div class="row">
+            <input type="text" placeholder="What's happening?" [(ngModel)]="text" class="tweet-text">
+        </div>
+        <br>
+        <div class="row" style="display: flex; justify-content:flex-end">
+            <button mat-button class="tweet-button" [disabled]="text == '' || !isSignedIn()" (click)="tweet()">Tweet</button>
+        </div>
+    </div>
+</div>

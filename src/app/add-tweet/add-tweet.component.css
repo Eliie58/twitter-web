@@ -1,0 +1,24 @@
+.app-add-tweet {
+    padding: 15px;
+    border: 1px solid rgb(239, 243, 244);
+}
+
+.tweet-button {
+    background-color: rgb(29, 155, 240);
+    color: white;
+    width: auto;
+    border-radius: 20px;
+}
+
+.tweet-button:disabled,
+.tweet-button[disabled] {
+    opacity: 0.5;
+}
+
+.tweet-text,
+.tweet-text:focus {
+    height: 50px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+}

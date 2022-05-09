@@ -7,6 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
+    "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -21,12 +22,46 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "stream": [
+        "./node_modules/stream-browserify"
+      ],
+      "crypto": [
+        "./node_modules/crypto-browserify"
+      ],
+      "assert": [
+        "./node_modules/assert"
+      ],
+      "http": [
+        "./node_modules/stream-http"
+      ],
+      "https": [
+        "./node_modules/https-browserify"
+      ],
+      "url": [
+        "./node_modules/url"
+      ],
+      "os": [
+        "./node_modules/os-browserify"
+      ],
+      "path": [
+        "./node_modules/path-browserify"
+      ],
+      "zlib": [
+        "./node_modules/browserify-zlib"
+      ],
+      "vm": [
+        "./node_modules/vm-browserify"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

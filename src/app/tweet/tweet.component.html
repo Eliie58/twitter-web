@@ -1,0 +1,38 @@
+<div class="app-tweet">
+
+    <p class="tweet-header"><a href="#" class="tweet-header">@{{owner}}</a> .
+        <span>{{publishedSince}}</span> &nbsp;
+    </p>
+    <input type="text" style="display: none;" value="{{ id }}">
+    <div>
+        <span [innerHtml]="format(text)"></span>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <mat-icon class="twitter-icon" svgIcon="comment"></mat-icon>
+            </div>
+            <div class="col-sm" (click)="retweet()">
+                <span *ngIf="!isRetweeted()">
+                    <mat-icon class="twitter-icon" svgIcon="retweet"></mat-icon>&nbsp;&nbsp;{{ retweets.length }}
+                </span>
+                <span *ngIf="isRetweeted()" style="color: rgb(0, 186, 124);">
+                    <mat-icon class="twitter-icon" svgIcon="retweeted"></mat-icon>&nbsp;&nbsp;{{ retweets.length }}
+                </span>
+            </div>
+            <div class="col-sm" (click)="like()">
+                <span *ngIf="!isLiked()">
+                <mat-icon class="twitter-icon" svgIcon="like"></mat-icon>&nbsp;&nbsp;{{ likes.length }}
+            </span>
+                <span *ngIf="isLiked()" style="color: rgb(249, 24, 128);">
+                <mat-icon class="twitter-icon" svgIcon="liked"></mat-icon>&nbsp;&nbsp;{{ likes.length }}
+            </span>
+            </div>
+            <div class="col-sm">
+                <mat-icon class="twitter-icon" svgIcon="share"></mat-icon>
+            </div>
+        </div>
+    </div>
+
+</div>
