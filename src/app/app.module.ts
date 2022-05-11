@@ -16,12 +16,17 @@ import 'hammerjs';
 import { AddTweetComponent } from './add-tweet/add-tweet.component';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EditTweetDialogComponent } from './edit-tweet-dialog/edit-tweet-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     TweetComponent,
-    AddTweetComponent
+    AddTweetComponent,
+    EditTweetDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +40,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     HttpClientModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

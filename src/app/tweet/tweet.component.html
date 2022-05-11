@@ -1,7 +1,7 @@
 <div class="app-tweet">
 
     <p class="tweet-header"><a href="#" class="tweet-header">@{{owner}}</a> .
-        <span>{{publishedSince}}</span> &nbsp;
+        <span matTooltip="{{publishDate | date:'h:mm aa . LLL d yyyy'}}">{{publishedSince}}</span> &nbsp;
     </p>
     <input type="text" style="display: none;" value="{{ id }}">
     <div>
@@ -32,10 +32,10 @@
             <div class="col-sm">
                 <mat-icon class="twitter-icon highlight highlight-blue" svgIcon="share"></mat-icon>
             </div>
-            <div *ngIf="isOwner()" class="col-sm">
+            <div *ngIf="isOwner()" class="col-sm" (click)="edit()">
                 <mat-icon class="twitter-icon highlight highlight-yellow" svgIcon="edit"></mat-icon>
             </div>
-            <div *ngIf="isOwner()" class="col-sm">
+            <div *ngIf="isOwner()" class="col-sm" (click)="delete()">
                 <mat-icon class="twitter-icon highlight highlight-red" svgIcon="delete"></mat-icon>
             </div>
         </div>

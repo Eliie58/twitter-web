@@ -27,3 +27,7 @@
 .column {
     padding-top: 4px;
 }
+
+mat-toolbar {
+    background-color: transparent;
+}

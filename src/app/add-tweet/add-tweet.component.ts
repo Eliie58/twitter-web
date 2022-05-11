@@ -10,25 +10,25 @@ import { DataService } from '../data.service';
 export class AddTweetComponent implements OnInit {
 
   public text: string = "";
-  private dataService: DataService;
-  private appComponent : AppComponent;
+  private signedIn: boolean = false;
 
-  constructor(dataService: DataService, appComponent : AppComponent) {
+  constructor(private dataService: DataService, private appComponent: AppComponent) {
     this.dataService = dataService;
     this.appComponent = appComponent;
   }
 
   ngOnInit(): void {
+    this.dataService.isSignedIn.subscribe(value => this.signedIn = value);
   }
 
   async tweet() {
     this.dataService.tweet(this.text);
     this.appComponent.addTweet(this.text);
-    this.text = ""; 
+    this.text = "";
   }
 
-  isSignedIn() : boolean {
-    return this.dataService.isSignedIn();
+  isSignedIn(): boolean {
+    return this.signedIn;
   }
 
 }

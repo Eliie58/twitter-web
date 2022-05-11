@@ -5,9 +5,9 @@
 
 .tweet-button {
     background-color: rgb(29, 155, 240);
-    color: white;
-    width: auto;
-    border-radius: 20px;
+    color: white !important;
+    width: auto !important;
+    border-radius: 20px !important;
 }
 
 .tweet-button:disabled,

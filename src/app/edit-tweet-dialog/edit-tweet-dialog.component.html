@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Edit Tweet</h1>
+<mat-dialog-content>
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Tweet Content</mat-label>
+        <input matInput [(ngModel)]="data.text">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button [disabled]="data.text == ''" color="primary" [mat-dialog-close]="data.text" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

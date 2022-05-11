@@ -3,6 +3,9 @@ import { DataService } from '../data.service';
 import { environment } from './../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Data } from '@angular/router';
+import { AppComponent } from '../app.component';
+import { MatDialog } from '@angular/material/dialog';
+import { EditTweetDialogComponent } from '../edit-tweet-dialog/edit-tweet-dialog.component';
 
 @Component({
   selector: 'app-tweet',
@@ -19,36 +22,38 @@ export class TweetComponent implements OnInit {
   @Input() likes: string[] = [];
 
   public publishedSince: string;
+  public publishDate: Date = new Date();
 
   private hashtagRegex = new RegExp(/#\S+/, 'ig');
-  private dataService : DataService;
+  private dataService: DataService;
+  private signedIn: boolean = false;
 
-  constructor(dataService: DataService, private matSnackBar: MatSnackBar) {
+  constructor(dataService: DataService, private matSnackBar: MatSnackBar, private appComponent: AppComponent, public dialog: MatDialog) {
     this.publishedSince = "";
     this.owner = "";
     this.dataService = dataService;
   }
 
   isOwner() {
-    return this.isCurrentUser(this.owner); 
+    return this.isCurrentUser(this.owner);
   }
 
   isCurrentUser(userId: string): boolean {
     return userId == this.dataService.getPublicKey();
   }
 
-  isLiked() : boolean {
+  isLiked(): boolean {
     return this.currentUserInList(this.likes);
   }
 
-  isRetweeted() : boolean {
+  isRetweeted(): boolean {
     return this.currentUserInList(this.retweets);
   }
 
-  currentUserInList(list : string[]) : boolean {
-    let found : boolean = false;
+  currentUserInList(list: string[]): boolean {
+    let found: boolean = false;
     list.forEach(item => {
-      if(item == this.dataService.getPublicKey()) {
+      if (item == this.dataService.getPublicKey()) {
         found = true;
         return;
       }
@@ -58,6 +63,8 @@ export class TweetComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.publishDate = new Date(Number(this.publishedAt) * 1000);
+    this.dataService.isSignedIn.subscribe(value => this.signedIn = value);
     const sinceSeconds = this.currentSeconds() - this.publishedAt;
     if (sinceSeconds < 60) {
       this.publishedSince = `${sinceSeconds}s`;
@@ -100,7 +107,7 @@ export class TweetComponent implements OnInit {
   }
 
   retweet() {
-    if(!this.isSignedIn()) {
+    if (!this.isSignedIn()) {
       this.promptNotLoggedIn();
       return;
     }
@@ -123,7 +130,7 @@ export class TweetComponent implements OnInit {
   }
 
   like() {
-    if(!this.isSignedIn()) {
+    if (!this.isSignedIn()) {
       this.promptNotLoggedIn();
       return;
     }
@@ -145,8 +152,56 @@ export class TweetComponent implements OnInit {
     this.dataService.like(Number(this.id));
   }
 
+  delete() {
+    if (!this.isSignedIn()) {
+      this.promptNotLoggedIn();
+      return;
+    }
+    if (Number(this.id) == -1) {
+      const snackBarRef = this.matSnackBar.open('You cannot Delete yet. Refresh the page please.', 'Refresh', {
+        duration: 5000,
+        panelClass: 'my-custom-snackbar'
+      });
+      snackBarRef.onAction().subscribe(() => {
+        window.location.reload();
+      });
+      return;
+    }
+    this.appComponent.delete(Number(this.id));
+    this.dataService.delete(Number(this.id));
+  }
+
+  edit() {
+    if (!this.isSignedIn()) {
+      this.promptNotLoggedIn();
+      return;
+    }
+    if (Number(this.id) == -1) {
+      const snackBarRef = this.matSnackBar.open('You cannot Delete yet. Refresh the page please.', 'Refresh', {
+        duration: 5000,
+        panelClass: 'my-custom-snackbar'
+      });
+      snackBarRef.onAction().subscribe(() => {
+        window.location.reload();
+      });
+      return;
+    }
+
+    const dialogRef = this.dialog.open(EditTweetDialogComponent, {
+      width: '40%',
+      data: { text: this.text },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.text = result;
+        this.dataService.edit(Number(this.id), this.text);
+      }
+    });
+  }
+
   promptNotLoggedIn() {
-    const snackBarRef = this.matSnackBar.open("You are not Signed In.", 'Sign In?',{
+    const snackBarRef = this.matSnackBar.open("You are not Signed In.", 'Sign In?', {
       duration: 5000,
       panelClass: 'my-custom-snackbar'
     });
@@ -165,8 +220,8 @@ export class TweetComponent implements OnInit {
     return text.replace(this.hashtagRegex, '<span class="hashtag">$&</span>');
   }
 
-  isSignedIn() : boolean {
-    return this.dataService.isSignedIn();
+  isSignedIn(): boolean {
+    return this.signedIn;
   }
 
 }

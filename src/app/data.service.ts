@@ -3,13 +3,15 @@ import Web3 from "web3";
 import { providers, Wallet, Contract } from 'ethers';
 import { environment } from './../environments/environment';
 import contractAbi from './contracts/TwitterApiImpl.js';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
-
+  
+  public signedIn: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  public isSignedIn = this.signedIn.asObservable();
 
   private web3: any;
   private provider: any;
@@ -29,7 +31,15 @@ export class DataService {
     if (!window.ethereum) {
       return;
     }
-    window.ethereum.on('accountsChanged', this.clearPublicKey);
+    let me = this;
+    window.ethereum.on('accountsChanged', function(accounts : string[]) {
+      if (accounts.length != 0) {
+        return;
+      }
+      me.publicKey = "";
+      me.signedIn.next(false);
+      console.log("Wallet disconnected");
+    });
   }
 
   async trySignIn() {
@@ -45,14 +55,6 @@ export class DataService {
     let accounts: string[] = await window.ethereum
       .request({ method: 'eth_accounts' });
     return accounts.length != 0;
-  }
-
-  clearPublicKey(accounts: string[]) {
-    if (accounts.length != 0) {
-      return;
-    }
-    this.publicKey = "";
-    console.log("Wallet disconnected");
   }
 
   getPublicKey() {
@@ -84,13 +86,14 @@ export class DataService {
     let privateKey = accounts[0];
     signer = new Wallet(privateKey, this.provider);
     let signedContract = new Contract(environment.CONTRACT_ADDRESS, contractAbi, signer);
-    await this.setPublicKey(privateKey, signedContract);
+    await this.setPublicKey(signedContract);
     return signedContract;
   }
 
-  private async setPublicKey(privateKey: string, contract: any) {
+  private async setPublicKey(contract: any) {
     contract.getMyAddress().then(publicKey => {
       this.publicKey = publicKey;
+      this.signedIn.next(true);
     })
   }
 
@@ -142,12 +145,40 @@ export class DataService {
     });
   }
 
-  async signIn(window: any) {
-    this.getSignedContract(window);
+  async delete(id: number) {
+
+    let latest = await this.web3.eth.getBlock("latest");
+    let gasPrice = await this.provider.getGasPrice();
+
+    let signedContract = await this.getSignedContract(window);
+    signedContract.deleteTweet(id, {
+      gasLimit: latest.gasLimit,
+      gasPrice: Math.round(gasPrice.toNumber() * 2)
+    }).then((result) => {
+      console.log("The response is: ", result)
+    }).catch(err => {
+      console.log("The error is: ", err)
+    });
   }
 
-  isSignedIn(): boolean {
-    return this.getPublicKey() != ''
+  async edit(id: number, text: string) {
+
+    let latest = await this.web3.eth.getBlock("latest");
+    let gasPrice = await this.provider.getGasPrice();
+
+    let signedContract = await this.getSignedContract(window);
+    signedContract.updateTweet(id,text, {
+      gasLimit: latest.gasLimit,
+      gasPrice: Math.round(gasPrice.toNumber() * 2)
+    }).then((result) => {
+      console.log("The response is: ", result)
+    }).catch(err => {
+      console.log("The error is: ", err)
+    });
+  }
+
+  async signIn(window: any) {
+    this.getSignedContract(window);
   }
 
 }

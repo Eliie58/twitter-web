@@ -37,3 +37,11 @@
 .highlight-blue:hover {
     background-color: rgb(29, 155, 240, 0.1);
 }
+
+.highlight-yellow:hover {
+    background-color: rgb(245, 221, 39, 0.1);
+}
+
+.highlight-red:hover {
+    background-color: rgb(245, 39, 39, 0.1);
+}

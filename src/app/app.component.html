@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3 column">
-                <mat-toolbar color="primary">
+                <mat-toolbar>
                     <mat-toolbar-row>
                         <div class="twitter-icon-container-parent">
                             <mat-icon class="twitter-icon" svgIcon="twitter"></mat-icon>
@@ -15,11 +15,13 @@
             </div>
             <div class="col-sm-6 column">
                 <app-add-tweet></app-add-tweet>
-                <app-tweet *ngFor="let tweet of tweets" [text]="tweet['text']" [id]="tweet['id']" [owner]="tweet['owner']" [publishedAt]="tweet['publishedAt']" [retweets]="tweet['retweets']" [likes]="tweet['likes']">
+                <app-tweet [@simpleFadeAnimation]="'in'" *ngFor="let tweet of tweets" [text]="tweet['text']" [id]="tweet['id']" [owner]="tweet['owner']" [publishedAt]="tweet['publishedAt']" [retweets]="tweet['retweets']" [likes]="tweet['likes']">
                 </app-tweet>
             </div>
             <div class="col-sm-3 column">
-                <button *ngIf="!isSignedIn()" mat-button class="signin-button" (click)="signIn()">Sign In to tweet, retweet, like, update or delete your existing tweets</button>
+                <div *ngIf="!isSignedIn()">
+                    <button mat-raised-button color="accent" class="signin-button" (click)="signIn()" matTooltip="To tweet, retweet, like, update or delete your existing tweets" aria-label="Sign in to tweet, retweet, like, update or delete your existing tweets">Sign In</button>
+                </div>
             </div>
         </div>
     </div>

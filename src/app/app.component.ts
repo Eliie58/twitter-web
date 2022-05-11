@@ -2,24 +2,48 @@ import { Component } from '@angular/core';
 import { DataService } from './data.service';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { environment } from 'src/environments/environment';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    // the fade-in/fade-out animation.
+    trigger('simpleFadeAnimation', [
+
+      // the "in" style determines the "resting" state of the element when it is visible.
+      state('in', style({ opacity: 1 })),
+
+      // fade in when created. this could also be written as transition('void => *')
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(200)
+      ]),
+
+      // fade out when destroyed. this could also be written as transition('void => *')
+      transition(':leave',
+        animate(400, style({ opacity: 0 })))
+    ])
+  ]
 })
 export class AppComponent {
 
-  dataService: DataService;
   blockNumber: BigInt;
   tweets: [][];
   lastTweetId: BigInt;
   theEnd: boolean;
+  signedIn : boolean = false;
 
-  constructor(private _dataService: DataService, private matIconRegistry: MatIconRegistry,
+  constructor(private dataService: DataService, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
-    this.dataService = _dataService;
+
     this.blockNumber = BigInt(0);
     this.tweets = [];
     this.lastTweetId = BigInt(0);
@@ -63,7 +87,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.getTweets()
+    this.getTweets();
+    this.dataService.isSignedIn.subscribe(value => this.signedIn = value);
   }
 
   title = 'twitter-web';
@@ -104,6 +129,13 @@ export class AppComponent {
   }
 
   isSignedIn() {
-    return this.dataService.isSignedIn();
+    return this.signedIn;
+  }
+
+  delete(id: number) {
+    const index = this.tweets.findIndex(tweet => tweet["id"] == id)
+    if (index >= 0) {
+      this.tweets.splice(index, 1);
+    }
   }
 }
