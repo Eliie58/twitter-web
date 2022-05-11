@@ -9,6 +9,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,6 @@ import {
 })
 export class AppComponent {
 
-  blockNumber: BigInt;
   tweets: [][];
   lastTweetId: BigInt;
   theEnd: boolean;
@@ -43,12 +43,21 @@ export class AppComponent {
   fetching: boolean = false;
 
   constructor(private dataService: DataService, private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer, private matSnackBar: MatSnackBar) {
 
-    this.blockNumber = BigInt(0);
     this.tweets = [];
     this.lastTweetId = BigInt(0);
     this.theEnd = false;
+
+    this.dataService.isSignedIn.subscribe(value => this.signedIn = value);
+    this.dataService.hasInitialized.subscribe(value => value && this.getTweets());
+    this.addIcons();
+  }
+
+  title = 'twitter-web';
+
+  addIcons() {
+
     this.matIconRegistry.addSvgIcon(
       `twitter`,
       this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svgexport-3.svg")
@@ -86,13 +95,6 @@ export class AppComponent {
       this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/icons8-delete.svg")
     );
   }
-
-  ngOnInit() {
-    this.getTweets();
-    this.dataService.isSignedIn.subscribe(value => this.signedIn = value);
-  }
-
-  title = 'twitter-web';
 
   getTweets() {
 
@@ -134,6 +136,13 @@ export class AppComponent {
   }
 
   signIn() {
+    const win: any = window;
+    if (!win.ethereum) {
+      this.matSnackBar.open('You cannot Sign In. Please Install Metamask.', 'Ok', {
+        panelClass: 'my-custom-snackbar'
+      });
+      return;
+    }
     this.dataService.signIn(window);
   }
 

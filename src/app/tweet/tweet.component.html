@@ -15,18 +15,18 @@
             </div>
             <div class="col-sm" (click)="retweet()">
                 <span *ngIf="!isRetweeted()">
-                    <mat-icon class="twitter-icon highlight highlight-green" svgIcon="retweet"></mat-icon>{{ retweets.length == 0 ? '' : retweets.length }}
+                    <mat-icon class="twitter-icon highlight highlight-green" svgIcon="retweet"></mat-icon>{{ retweets.length === 0 ? '' : retweets.length }}
                 </span>
                 <span *ngIf="isRetweeted()" style="color: rgb(0, 186, 124);">
-                    <mat-icon class="twitter-icon highlight highlight-green" svgIcon="retweeted"></mat-icon>{{ retweets.length == 0 ? '' : retweets.length }}
+                    <mat-icon class="twitter-icon highlight highlight-green" svgIcon="retweeted"></mat-icon>{{ retweets.length === 0 ? '' : retweets.length }}
                 </span>
             </div>
             <div class="col-sm" (click)="like()">
                 <span *ngIf="!isLiked()">
-                <mat-icon class="twitter-icon highlight highlight-pink" svgIcon="like"></mat-icon>{{ likes.length == 0 ? '' : likes.length }}
+                <mat-icon class="twitter-icon highlight highlight-pink" svgIcon="like"></mat-icon>{{ likes.length === 0 ? '' : likes.length }}
             </span>
                 <span *ngIf="isLiked()" style="color: rgb(249, 24, 128);">
-                <mat-icon class="twitter-icon highlight highlight-pink" svgIcon="liked"></mat-icon>{{  likes.length == 0 ? '' : likes.length  }}
+                <mat-icon class="twitter-icon highlight highlight-pink" svgIcon="liked"></mat-icon>{{  likes.length === 0 ? '' : likes.length  }}
             </span>
             </div>
             <div class="col-sm">

@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-end-of-page',
   templateUrl: './end-of-page.component.html',
   styleUrls: ['./end-of-page.component.css']
 })
-export class EndOfPageComponent implements OnInit {
+export class EndOfPageComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }
