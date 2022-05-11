@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { DataService } from './data.service';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -39,7 +39,8 @@ export class AppComponent {
   tweets: [][];
   lastTweetId: BigInt;
   theEnd: boolean;
-  signedIn : boolean = false;
+  signedIn: boolean = false;
+  fetching: boolean = false;
 
   constructor(private dataService: DataService, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
@@ -95,8 +96,15 @@ export class AppComponent {
 
   getTweets() {
 
+    if (this.fetching) {
+      console.log('Already fetching tweets');
+      return;
+    }
+    this.fetching = true;
+    this.lastTweetId = BigInt(Number(this.lastTweetId) - 1);
     this.dataService.getTweets(this.lastTweetId).then(tweets => {
       if (this.theEnd) {
+        this.fetching = false;
         return;
       }
       tweets.forEach(tweet => {
@@ -110,6 +118,7 @@ export class AppComponent {
           this.theEnd = true;
         }
       });
+      this.fetching = false;
     })
   }
 
@@ -136,6 +145,13 @@ export class AppComponent {
     const index = this.tweets.findIndex(tweet => tweet["id"] == id)
     if (index >= 0) {
       this.tweets.splice(index, 1);
+    }
+  }
+
+  @HostListener("window:scroll", ["$event"])
+  onScroll(event) {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+      this.getTweets();
     }
   }
 }

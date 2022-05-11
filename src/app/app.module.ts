@@ -20,13 +20,15 @@ import { EditTweetDialogComponent } from './edit-tweet-dialog/edit-tweet-dialog.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { EndOfPageComponent } from './end-of-page/end-of-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TweetComponent,
     AddTweetComponent,
-    EditTweetDialogComponent
+    EditTweetDialogComponent,
+    EndOfPageComponent
   ],
   imports: [
     BrowserModule,

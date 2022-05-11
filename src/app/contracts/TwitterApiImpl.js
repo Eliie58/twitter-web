@@ -13,6 +13,16 @@ module.exports = [{
     "stateMutability": "nonpayable",
     "type": "function"
 }, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "tweetId",
+        "type": "uint256"
+    }],
+    "name": "deleteTweet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
     "inputs": [],
     "name": "getMyAddress",
     "outputs": [{
@@ -24,33 +34,9 @@ module.exports = [{
     "type": "function"
 }, {
     "inputs": [{
-        "internalType": "uint256",
-        "name": "tweetId",
-        "type": "uint256"
-    }, {
-        "internalType": "string",
-        "name": "text",
-        "type": "string"
-    }],
-    "name": "updateTweet",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "inputs": [{
-        "internalType": "uint256",
-        "name": "tweetId",
-        "type": "uint256"
-    }],
-    "name": "deleteTweet",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "inputs": [{
-        "internalType": "uint256",
+        "internalType": "int256",
         "name": "lastId",
-        "type": "uint256"
+        "type": "int256"
     }],
     "name": "getTweets",
     "outputs": [{
@@ -83,11 +69,21 @@ module.exports = [{
             "name": "deleted",
             "type": "bool"
         }],
-        "internalType": "struct TwitterApiImpl.Tweet[]",
+        "internalType": "struct Tweet[]",
         "name": "",
         "type": "tuple[]"
     }],
     "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "tweetId",
+        "type": "uint256"
+    }],
+    "name": "like",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
 }, {
     "inputs": [{
@@ -104,8 +100,12 @@ module.exports = [{
         "internalType": "uint256",
         "name": "tweetId",
         "type": "uint256"
+    }, {
+        "internalType": "string",
+        "name": "text",
+        "type": "string"
     }],
-    "name": "like",
+    "name": "updateTweet",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

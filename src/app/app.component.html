@@ -17,6 +17,7 @@
                 <app-add-tweet></app-add-tweet>
                 <app-tweet [@simpleFadeAnimation]="'in'" *ngFor="let tweet of tweets" [text]="tweet['text']" [id]="tweet['id']" [owner]="tweet['owner']" [publishedAt]="tweet['publishedAt']" [retweets]="tweet['retweets']" [likes]="tweet['likes']">
                 </app-tweet>
+                <app-end-of-page></app-end-of-page>
             </div>
             <div class="col-sm-3 column">
                 <div *ngIf="!isSignedIn()">
