@@ -16,7 +16,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Production Build
 
-Run `ng build --prod --deploy-url /twitter-web/docs/` to build the project for deployment to github pages. The build artifacts will be stored in the `docs/` directory.
+Run `ng build --prod --base-href /twitter-web` to build the project for deployment to github pages. The build artifacts will be stored in the `docs/` directory.
 
 ## Running unit tests
 
